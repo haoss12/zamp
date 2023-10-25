@@ -31,6 +31,7 @@ public:
    *  \return Wartość kąta \e roll wyrażona w stopniach.
    */
   virtual double GetAng_Roll_deg() const = 0;
+
   /*!
    * \brief Udostępnia wartość kąta \e yaw.
    *
@@ -39,6 +40,7 @@ public:
    *  \return Wartość kąta \e pitch wyrażona w stopniach.
    */
   virtual double GetAng_Pitch_deg() const = 0;
+
   /*!
    * \brief Udostępnia wartość kąta \e yaw.
    *
@@ -55,6 +57,7 @@ public:
    *  \param[in] Ang_Roll_deg - nowa wartość kąta \e roll wyrażona w stopniach.
    */
   virtual void SetAng_Roll_deg(double Ang_Roll_deg) = 0;
+
   /*!
    * \brief Zmienia wartość kąta \e pitch.
    *
@@ -62,6 +65,7 @@ public:
    *  \param[in] Ang_Pitch_deg - nowa wartość kąta \e pitch wyrażona w stopniach.
    */
   virtual void SetAng_Pitch_deg(double Ang_Pitch_deg) = 0;
+
   /*!
    * \brief Zmienia wartość kąta \e yaw.
    *
@@ -78,6 +82,7 @@ public:
    *         że współrzędne wyrażone są w metrach.
    */
   virtual const Vector3D &GetPositoin_m() const = 0;
+
   /*!
    * \brief Zmienia współrzędne aktualnej pozycji obiektu.
    *
@@ -94,6 +99,7 @@ public:
    *  \param[in]  sName - nowa nazwa obiektu.
    */
   virtual void SetName(const char *sName) = 0;
+
   /*!
    * \brief Udostępnia nazwę obiektu.
    *  Udostępnia nazwę identyfikującą obiekt.

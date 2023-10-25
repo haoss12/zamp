@@ -27,10 +27,12 @@ public:
    * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)
    */
   virtual void PrintCmd() const = 0;
+
   /*!
    * \brief Wyświetla składnię polecenia
    */
   virtual void PrintSyntax() const = 0;
+
   /*!
    * \brief Wyświetla wartości wczytanych parametrów
    */
@@ -40,6 +42,7 @@ public:
    * \brief Udostępnia nazwę polecenia
    */
   virtual const char *GetCmdName() const = 0;
+
   /*!
    * \brief Wykonuje polecenie oraz wizualizuje jego realizację
    *
@@ -53,6 +56,7 @@ public:
   virtual bool ExecCmd(AbstractScene &rScn,
                        const char *sMobObjName,
                        AbstractComChannel &rComChann) = 0;
+
   /*!
    * \brief Czyta wartości parametrów danego polecenia.
    *

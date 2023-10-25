@@ -34,14 +34,17 @@ public:
    * \brief
    */
   Interp4Move();
+  
   /*!
    * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)
    */
   virtual void PrintCmd() const override;
+  
   /*!
    * \brief Wyświetla składnię polecenia
    */
   virtual void PrintSyntax() const override;
+  
   /*!
    * \brief Wyświetla wartości wczytanych parametrów
    */

@@ -31,6 +31,7 @@ public:
          *          na niego. W przypadku przeciwnym zwracany jest wskaźnik \p nullptr.
          */
         virtual AbstractMobileObj *FindMobileObj(const char *sName) = 0;
+        
         /*!
          * \brief Dodaje do sceny nowy obiekt.
          *

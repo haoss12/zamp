@@ -69,6 +69,7 @@ namespace geom
     Type _Coord[Size];
 
   public:
+    
     /*!
      * \brief Współrzędne wektora są zerowane.
      *

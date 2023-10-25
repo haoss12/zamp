@@ -3,8 +3,6 @@
 #include <cassert>
 #include "AbstractInterp4Command.hh"
 
-using namespace std;
-
 int main()
 {
   void *pLibHnd_Move = dlopen("libInterp4Move.so", RTLD_LAZY);
@@ -13,27 +11,27 @@ int main()
 
   if (!pLibHnd_Move)
   {
-    cerr << "!!! Brak biblioteki: Interp4Move.so" << endl;
+    std::cerr << "!!! Brak biblioteki: Interp4Move.so" << std::endl;
     return 1;
   }
 
   pFun = dlsym(pLibHnd_Move, "CreateCmd");
   if (!pFun)
   {
-    cerr << "!!! Nie znaleziono funkcji CreateCmd" << endl;
+    std::cerr << "!!! Nie znaleziono funkcji CreateCmd" << std::endl;
     return 1;
   }
   pCreateCmd_Move = reinterpret_cast<AbstractInterp4Command *(*)(void)>(pFun);
 
   AbstractInterp4Command *pCmd = pCreateCmd_Move();
 
-  cout << endl;
-  cout << pCmd->GetCmdName() << endl;
-  cout << endl;
+  std::cout << std::endl;
+  std::cout << pCmd->GetCmdName() << std::endl;
+  std::cout << std::endl;
   pCmd->PrintSyntax();
-  cout << endl;
+  std::cout << std::endl;
   pCmd->PrintCmd();
-  cout << endl;
+  std::cout << std::endl;
 
   delete pCmd;
 
