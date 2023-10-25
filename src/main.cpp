@@ -61,7 +61,7 @@ bool Set4LibInterfaces::Init()
 {
   // get all four plugins into the map
 
-  std::string list[] = {"Move", "Set", "Rotate"};
+  std::string list[] = {"Move", "Set", "Rotate", "Pause"};
 
   for (auto &s : list)
   {
@@ -89,34 +89,33 @@ int main()
     return 1;
   }
 
-  AbstractInterp4Command *pSetCmd = SetOfInterfaces.get_pLibInterface("Set")->CreateCmd();
+  // test if all of the components in set are working properly
 
-  std::cout << std::endl;
-  std::cout << pSetCmd->GetCmdName() << std::endl;
-  std::cout << std::endl;
-  pSetCmd->PrintSyntax();
-  std::cout << std::endl;
-  pSetCmd->PrintCmd();
-  std::cout << std::endl;
+  std::string list[] = {"Move", "Set", "Rotate", "Pause"};
 
-  delete pSetCmd;
-
-  LibInterface MoveCmdInterface;
-
-  if (!MoveCmdInterface.Init("libInterp4Move.so"))
+  for (auto &s : list)
   {
-    return 1;
+    AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(s.c_str())->CreateCmd();
+
+    std::cout << std::endl;
+    std::cout << pCmd->GetCmdName() << std::endl;
+    pCmd->PrintSyntax();
+    pCmd->PrintCmd();
+    std::cout << std::endl;
+
+    delete pCmd;
   }
 
-  AbstractInterp4Command *pMoveCmd = MoveCmdInterface.CreateCmd();
+  for (auto &s : list)
+  {
+    AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(s.c_str())->CreateCmd();
 
-  std::cout << std::endl;
-  std::cout << pMoveCmd->GetCmdName() << std::endl;
-  std::cout << std::endl;
-  pMoveCmd->PrintSyntax();
-  std::cout << std::endl;
-  pMoveCmd->PrintCmd();
-  std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << pCmd->GetCmdName() << std::endl;
+    pCmd->PrintSyntax();
+    pCmd->PrintCmd();
+    std::cout << std::endl;
 
-  delete pMoveCmd;
+    delete pCmd;
+  }
 }

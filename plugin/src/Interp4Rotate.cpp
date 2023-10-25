@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Interp4Set.hh"
+#include "Interp4Rotate.hh"
 
 using std::cout;
 using std::endl;
@@ -7,7 +7,7 @@ using std::endl;
 extern "C"
 {
   AbstractInterp4Command *CreateCmd(void);
-  const char *GetCmdName() { return "Set"; }
+  const char *GetCmdName() { return "Rotate"; }
 }
 
 /*!
@@ -17,20 +17,20 @@ extern "C"
  */
 AbstractInterp4Command *CreateCmd(void)
 {
-  return Interp4Set::CreateCmd();
+  return Interp4Rotate::CreateCmd();
 }
 
 /*!
  *
  */
-Interp4Set::Interp4Set() : _Speed_mmS(0)
+Interp4Rotate::Interp4Rotate() : _Speed_mmS(0)
 {
 }
 
 /*!
  *
  */
-void Interp4Set::PrintCmd() const
+void Interp4Rotate::PrintCmd() const
 {
   /*
    *  Tu trzeba napisać odpowiednio zmodyfikować kod poniżej.
@@ -41,7 +41,7 @@ void Interp4Set::PrintCmd() const
 /*!
  *
  */
-const char *Interp4Set::GetCmdName() const
+const char *Interp4Rotate::GetCmdName() const
 {
   return ::GetCmdName();
 }
@@ -49,7 +49,7 @@ const char *Interp4Set::GetCmdName() const
 /*!
  *
  */
-bool Interp4Set::ExecCmd(AbstractScene &rScn,
+bool Interp4Rotate::ExecCmd(AbstractScene &rScn,
                          const char *sMobObjName,
                          AbstractComChannel &rComChann)
 {
@@ -62,7 +62,7 @@ bool Interp4Set::ExecCmd(AbstractScene &rScn,
 /*!
  *
  */
-bool Interp4Set::ReadParams(std::istream &Strm_CmdsList)
+bool Interp4Rotate::ReadParams(std::istream &Strm_CmdsList)
 {
   /*
    *  Tu trzeba napisać odpowiedni kod.
@@ -73,15 +73,15 @@ bool Interp4Set::ReadParams(std::istream &Strm_CmdsList)
 /*!
  *
  */
-AbstractInterp4Command *Interp4Set::CreateCmd()
+AbstractInterp4Command *Interp4Rotate::CreateCmd()
 {
-  return new Interp4Set();
+  return new Interp4Rotate();
 }
 
 /*!
  *
  */
-void Interp4Set::PrintSyntax() const
+void Interp4Rotate::PrintSyntax() const
 {
-  cout << "   Set  NazwaObiektu  Szybkosc[m/s]  DlugoscDrogi[m]" << endl;
+  cout << "   Rotate  NazwaObiektu  Szybkosc[m/s]  DlugoscDrogi[m]" << endl;
 }
