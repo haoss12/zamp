@@ -1,4 +1,8 @@
-## The provided Makefile allows the achievement of three main targets and one auxiliary target.
+# "Advanced Programming Methods"
+
+This is repository for keeping project associated with "Advanced Programming Methods" course at WUST, for Control Systems and Robotics students.
+
+### The provided Makefile allows the achievement of three main targets and one auxiliary target.
 
 The default target is to compile, link, and then run the program. To accomplish this, you should run the command:
 
