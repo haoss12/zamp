@@ -23,7 +23,7 @@ AbstractInterp4Command *CreateCmd(void)
 /*!
  *
  */
-Interp4Pause::Interp4Pause() : _Speed_mmS(0)
+Interp4Pause::Interp4Pause() : _Time_ms(0)
 {
 }
 
@@ -32,10 +32,7 @@ Interp4Pause::Interp4Pause() : _Speed_mmS(0)
  */
 void Interp4Pause::PrintCmd() const
 {
-  /*
-   *  Tu trzeba napisać odpowiednio zmodyfikować kod poniżej.
-   */
-  cout << GetCmdName() << " " << _Speed_mmS << " 10  2" << endl;
+  cout << GetCmdName() << " " << _Time_ms << endl;
 }
 
 /*!
@@ -64,10 +61,18 @@ bool Interp4Pause::ExecCmd(AbstractScene &rScn,
  */
 bool Interp4Pause::ReadParams(std::istream &Strm_CmdsList)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
-  return true;
+  std::string name;
+  double t;
+  Strm_CmdsList >> name;
+  Strm_CmdsList >> t;
+
+  if (Strm_CmdsList.good())
+  {
+    _Time_ms = t;
+    return true;
+  }
+
+  return false;
 }
 
 /*!
@@ -83,5 +88,5 @@ AbstractInterp4Command *Interp4Pause::CreateCmd()
  */
 void Interp4Pause::PrintSyntax() const
 {
-  cout << "   Pause  NazwaObiektu  Szybkosc[m/s]  DlugoscDrogi[m]" << endl;
+  cout << "   Pause  CzasPauzy[ms]" << endl;
 }

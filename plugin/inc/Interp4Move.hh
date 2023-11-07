@@ -23,11 +23,14 @@
 class Interp4Move : public AbstractInterp4Command
 {
   /*
-   *  Tu należy zdefiniować pola, które są niezbędne
-   *  do przechowywania wartości parametrów danego polecenia.
-   *  Ponieżej zdefiniowane jest tylko jedno pole jako przykład.
+   *  Szybkosc obiektu w m/s
    */
   double _Speed_mmS;
+
+  /*
+   * Dlugosc drogi do przebycia w metrach 
+  */
+  double _Distance_m;
 
 public:
   /*!

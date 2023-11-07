@@ -2,3 +2,4 @@ interp
 obj/
 libs/
 plugin/obj/
+.vscode/

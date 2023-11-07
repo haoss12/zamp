@@ -14,9 +14,6 @@ LDFLAGS=-Wall -shared
 __lines_for_space__:
 	@echo
 	@echo
-	@echo
-	@echo
-	@echo
 
 ../libs/libInterp4Move.so: obj/Interp4Move.o
 	g++ ${LDFLAGS} -o ../libs/libInterp4Move.so obj/Interp4Move.o

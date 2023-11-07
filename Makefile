@@ -8,9 +8,6 @@ obj:
 __lines_for_space__:
 	@echo
 	@echo
-	@echo
-	@echo
-	@echo
 
 
 __plugin__:

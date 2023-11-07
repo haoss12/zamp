@@ -23,11 +23,19 @@
 class Interp4Rotate : public AbstractInterp4Command
 {
   /*
-   *  Tu należy zdefiniować pola, które są niezbędne
-   *  do przechowywania wartości parametrów danego polecenia.
-   *  Ponieżej zdefiniowane jest tylko jedno pole jako przykład.
-   */
-  double _Speed_mmS;
+  * Os obrotu dla obiektu - dozwolone wartosci to X, Y oraz Z
+  */
+  char _Axis;
+
+  /**
+   * Szybkosc obrotu wyrazona w stopniach na sekunde
+  */
+  double _Speed_degS;
+
+  /**
+   * Kat obrotu w stopniach
+  */
+  double _Angle_deg;
 
 public:
   /*!

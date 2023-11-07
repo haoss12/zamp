@@ -3,6 +3,8 @@
 #include <cassert>
 #include <map>
 #include <memory>
+#include <exception>
+
 #include "AbstractInterp4Command.hh"
 
 class LibInterface
@@ -77,6 +79,10 @@ bool Set4LibInterfaces::Init()
 
 std::shared_ptr<LibInterface> Set4LibInterfaces::get_pLibInterface(const char *sCommandName)
 {
+  if (_mSet.count(sCommandName) == 0) // this element is not in the map
+  {
+    throw std::logic_error("no matching element");
+  }
   return _mSet[sCommandName];
 }
 
