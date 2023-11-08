@@ -61,18 +61,11 @@ bool Interp4Pause::ExecCmd(AbstractScene &rScn,
  */
 bool Interp4Pause::ReadParams(std::istream &Strm_CmdsList)
 {
-  std::string name;
   double t;
-  Strm_CmdsList >> name;
   Strm_CmdsList >> t;
 
-  if (Strm_CmdsList.good())
-  {
-    _Time_ms = t;
-    return true;
-  }
-
-  return false;
+  _Time_ms = t;
+  return true;
 }
 
 /*!

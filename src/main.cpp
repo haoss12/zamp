@@ -1,93 +1,49 @@
 #include <iostream>
+#include <sstream>
 #include <dlfcn.h>
 #include <cassert>
 #include <map>
 #include <memory>
 #include <exception>
+#include <vector>
+#include <algorithm>
 
-#include "AbstractInterp4Command.hh"
+#include "Set4LibInterfaces.hh"
 
-class LibInterface
+#define BUF_SIZE 512
+
+bool ExecutePreprocessing(const char *sFileName, std::istringstream &issCommands)
 {
-  void *_pLinHnd = nullptr;
-  AbstractInterp4Command *(*_pCreateCmd)(void) = nullptr;
+  std::string preprocessor = "cpp -P ";
+  char line_buffer[BUF_SIZE];
+  std::ostringstream outStrm;
 
-public:
-  ~LibInterface()
+  preprocessor += sFileName;
+  FILE *pProc = popen(preprocessor.c_str(), "r"); // open process
+
+  if (!pProc)
   {
-    if (_pLinHnd)
-      dlclose(_pLinHnd);
-  }
-
-  bool Init(const char *sFileName);
-
-  AbstractInterp4Command *CreateCmd() { return _pCreateCmd(); }
-};
-
-bool LibInterface::Init(const char *sFileName)
-{
-  if (sFileName == nullptr)
-  {
-    std::cerr << "!!! Nieprawidłowa nazwa: " << std::endl;
-  }
-
-  _pLinHnd = dlopen(sFileName, RTLD_LAZY);
-  if (!_pLinHnd)
-  {
-    std::cerr << "!!! Brak biblioteki: " << sFileName << std::endl;
     return false;
   }
 
-  void *pFun = dlsym(_pLinHnd, "CreateCmd");
-  if (!pFun)
+  while (fgets(line_buffer, BUF_SIZE, pProc))
   {
-    std::cerr << "!!! Nie znaleziono funkcji CreateCmd" << std::endl;
-    return false;
+    outStrm << line_buffer;
   }
-  _pCreateCmd = reinterpret_cast<AbstractInterp4Command *(*)(void)>(pFun);
 
-  return true;
+  issCommands.str(outStrm.str());
+
+  return pclose(pProc) == 0;
 }
 
-class Set4LibInterfaces
+int main(int argc, char const *argv[])
 {
-private:
-  std::map<std::string, std::shared_ptr<LibInterface>> _mSet;
 
-public:
-  bool Init();
-  std::shared_ptr<LibInterface> get_pLibInterface(const char *sCommandName);
-};
-
-bool Set4LibInterfaces::Init()
-{
-  // get all four plugins into the map
-
-  std::string list[] = {"Move", "Set", "Rotate", "Pause"};
-
-  for (auto &s : list)
+  if (argc < 2)
   {
-    _mSet[s] = std::make_shared<LibInterface>();
-    std::string filename = "libInterp4" + s + ".so";
-    if (!_mSet[s].get()->Init(filename.c_str()))
-    {
-      return false;
-    }
+    std::cerr << "Zbyt malo argumentow wywolania! " << std::endl;
+    return 0;
   }
-  return true;
-}
-
-std::shared_ptr<LibInterface> Set4LibInterfaces::get_pLibInterface(const char *sCommandName)
-{
-  if (_mSet.count(sCommandName) == 0) // this element is not in the map
-  {
-    throw std::logic_error("no matching element");
-  }
-  return _mSet[sCommandName];
-}
-
-int main()
-{
 
   Set4LibInterfaces SetOfInterfaces;
   if (!SetOfInterfaces.Init())
@@ -97,31 +53,47 @@ int main()
 
   // test if all of the components in set are working properly
 
-  std::string list[] = {"Move", "Set", "Rotate", "Pause"};
+  std::vector<std::string> list{"Move", "Set", "Rotate", "Pause"};
 
-  for (auto &s : list)
+  std::istringstream iss;
+  std::string command;
+  std::string word;
+
+  ExecutePreprocessing(argv[1], iss);
+
+  while (std::getline(iss, command))
   {
-    AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(s.c_str())->CreateCmd();
+    std::cout << "wczytano: " << command << std::endl;
+    std::istringstream issTemp;
+    issTemp.str(command);
+    issTemp >> word;
 
-    std::cout << std::endl;
-    std::cout << pCmd->GetCmdName() << std::endl;
-    pCmd->PrintSyntax();
-    pCmd->PrintCmd();
-    std::cout << std::endl;
+    if (std::find(list.begin(), list.end(), word) != list.end())
+    {
+      AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(word.c_str())->CreateCmd();
+      std::cout << std::endl;
+      if (pCmd->ReadParams(issTemp) == false)
+      {
+        std::cerr << "nie udalo sie odczytac argumentow" << std::endl;
+      }
+      pCmd->PrintCmd();
+      std::cout << std::endl;
 
-    delete pCmd;
+      delete pCmd;
+      issTemp.str("\0");
+    }
   }
 
-  for (auto &s : list)
-  {
-    AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(s.c_str())->CreateCmd();
+  // for (auto &s : list)
+  // {
+  //   AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(s.c_str())->CreateCmd();
 
-    std::cout << std::endl;
-    std::cout << pCmd->GetCmdName() << std::endl;
-    pCmd->PrintSyntax();
-    pCmd->PrintCmd();
-    std::cout << std::endl;
+  //   std::cout << std::endl;
+  //   std::cout << pCmd->GetCmdName() << std::endl;
+  //   pCmd->PrintSyntax();
+  //   pCmd->PrintCmd();
+  //   std::cout << std::endl;
 
-    delete pCmd;
-  }
+  //   delete pCmd;
+  // }
 }

@@ -22,19 +22,21 @@
  */
 class Interp4Rotate : public AbstractInterp4Command
 {
+  std::string _ObjName;
+
   /*
-  * Os obrotu dla obiektu - dozwolone wartosci to X, Y oraz Z
-  */
+   * Os obrotu dla obiektu - dozwolone wartosci to X, Y oraz Z
+   */
   char _Axis;
 
   /**
    * Szybkosc obrotu wyrazona w stopniach na sekunde
-  */
+   */
   double _Speed_degS;
 
   /**
    * Kat obrotu w stopniach
-  */
+   */
   double _Angle_deg;
 
 public:

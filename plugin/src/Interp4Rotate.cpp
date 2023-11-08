@@ -61,24 +61,20 @@ bool Interp4Rotate::ExecCmd(AbstractScene &rScn,
  */
 bool Interp4Rotate::ReadParams(std::istream &Strm_CmdsList)
 {
-  std::string name;
+  std::string obj;
   char temp, axis;
   double s, ang;
-  Strm_CmdsList >> name;
+  Strm_CmdsList >> obj;
   Strm_CmdsList >> temp; // to skip 'O'
   Strm_CmdsList >> axis;
   Strm_CmdsList >> s;
   Strm_CmdsList >> ang;
 
-  if (Strm_CmdsList.good())
-  {
-    _Axis = axis;
-    _Speed_degS = s;
-    _Angle_deg = ang;
-    return true;
-  }
-
-  return false;
+  _ObjName = obj;
+  _Axis = axis;
+  _Speed_degS = s;
+  _Angle_deg = ang;
+  return true;
 }
 
 /*!

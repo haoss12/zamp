@@ -61,20 +61,16 @@ bool Interp4Move::ExecCmd(AbstractScene &rScn,
  */
 bool Interp4Move::ReadParams(std::istream &Strm_CmdsList)
 {
-  std::string name;
+  std::string obj;
   double s, d;
-  Strm_CmdsList >> name;
+  Strm_CmdsList >> obj;
   Strm_CmdsList >> s;
   Strm_CmdsList >> d;
 
-  if (Strm_CmdsList.good())
-  {
-    _Speed_mmS = s;
-    _Distance_m = d;
-    return true;
-  }
-
-  return false;
+  _ObjName = obj;
+  _Speed_mmS = s;
+  _Distance_m = d;
+  return true;
 }
 
 /*!

@@ -6,6 +6,8 @@
 #pragma implementation
 #endif
 
+#include <string>
+
 #include "AbstractInterp4Command.hh"
 
 /*!
@@ -22,14 +24,16 @@
  */
 class Interp4Move : public AbstractInterp4Command
 {
+
+  std::string _ObjName;
   /*
    *  Szybkosc obiektu w m/s
    */
   double _Speed_mmS;
 
   /*
-   * Dlugosc drogi do przebycia w metrach 
-  */
+   * Dlugosc drogi do przebycia w metrach
+   */
   double _Distance_m;
 
 public:
@@ -37,17 +41,17 @@ public:
    * \brief
    */
   Interp4Move();
-  
+
   /*!
    * \brief Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)
    */
   virtual void PrintCmd() const override;
-  
+
   /*!
    * \brief Wyświetla składnię polecenia
    */
   virtual void PrintSyntax() const override;
-  
+
   /*!
    * \brief Wyświetla wartości wczytanych parametrów
    */

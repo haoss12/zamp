@@ -23,7 +23,7 @@ AbstractInterp4Command *CreateCmd(void)
 /*!
  *
  */
-Interp4Set::Interp4Set() : _Speed_mmS(0)
+Interp4Set::Interp4Set()
 {
 }
 
@@ -35,7 +35,7 @@ void Interp4Set::PrintCmd() const
   /*
    *  Tu trzeba napisać odpowiednio zmodyfikować kod poniżej.
    */
-  cout << GetCmdName() << " " << _Speed_mmS << " 10  2" << endl;
+  cout << GetCmdName() << " " << _ObjName << " " << _X << " " << _Y << " " << _Z << " " << _OX << " " << _Y << " " << _OZ << endl;
 }
 
 /*!
@@ -64,9 +64,7 @@ bool Interp4Set::ExecCmd(AbstractScene &rScn,
  */
 bool Interp4Set::ReadParams(std::istream &Strm_CmdsList)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  Strm_CmdsList >> _ObjName >> _X >> _Y >> _Z >> _OX >> _Y >> _OZ;
   return true;
 }
 
