@@ -9,4 +9,4 @@
   Move   Ob_A  10 10
   Rotate Ob_B OZ ROTATE_SPEED 60 /* Gdyby Rotate i Move wykonywane byloby */
   Move   Ob_B 10 20              /* jednoczesnie, to powodowaloby to      */
-                                 /* przesuniecie po luku                  */
+  Null   Ob_B 11 12              /* przesuniecie po luku                  */

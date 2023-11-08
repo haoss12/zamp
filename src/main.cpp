@@ -141,6 +141,8 @@ int main(int argc, char const *argv[])
   if (!ReadFile("config/config.xml", Config))
     return 1;
 
+  std::cout << std::endl;
+
   if (argc < 2)
   {
     std::cerr << "Zbyt malo argumentow wywolania! " << std::endl;
@@ -159,7 +161,7 @@ int main(int argc, char const *argv[])
 
   std::istringstream iss;
   std::string command;
-  std::string word;
+  std::string keyword;
 
   ExecutePreprocessing(argv[1], iss);
 
@@ -168,11 +170,11 @@ int main(int argc, char const *argv[])
     std::cout << "wczytano: " << command << std::endl;
     std::istringstream issTemp;
     issTemp.str(command); // giving only fragment of the stream, not the whole
-    issTemp >> word;
+    issTemp >> keyword;
 
-    if (std::find(list.begin(), list.end(), word) != list.end())
+    try
     {
-      AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(word.c_str())->CreateCmd();
+      AbstractInterp4Command *pCmd = SetOfInterfaces.get_pLibInterface(keyword.c_str())->CreateCmd();
       std::cout << std::endl;
       if (pCmd->ReadParams(issTemp) == false)
       {
@@ -183,6 +185,10 @@ int main(int argc, char const *argv[])
 
       delete pCmd;
       issTemp.str("\0");
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
     }
   }
 
