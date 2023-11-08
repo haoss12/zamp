@@ -65,7 +65,7 @@ int main(int argc, char const *argv[])
   {
     std::cout << "wczytano: " << command << std::endl;
     std::istringstream issTemp;
-    issTemp.str(command);
+    issTemp.str(command); // giving only fragment of the stream, not the whole 
     issTemp >> word;
 
     if (std::find(list.begin(), list.end(), word) != list.end())
