@@ -1,5 +1,7 @@
 # "Advanced Programming Methods"
 
+![C-C++ Workflow](https://github.com/haoss12/zamp/actions/workflows/c-cpp.yml/badge.svg)
+
 This is repository for keeping project associated with "Advanced Programming Methods" course at WUST, for Control Systems and Robotics students.
 
 ### The provided Makefile allows the achievement of three main targets and one auxiliary target.
