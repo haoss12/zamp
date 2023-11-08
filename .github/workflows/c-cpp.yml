@@ -17,5 +17,7 @@ jobs:
       run: make
     - name: link
       run: export LD_LIBRARY_PATH="./libs"
+    - name: check
+      run: echo $LD_LIBRARY_PATH
     - name: run
       run: ./interp test.cmd
