@@ -1,18 +1,18 @@
 #ifndef SET4LIBINTERFACES_HH
 #define SET4LIBINTERFACES_HH
 
+#include <exception>
 #include <map>
 #include <memory>
-#include <exception>
 
 #include "LibInterface.hh"
 
 class Set4LibInterfaces
 {
-private:
+  private:
     std::map<std::string, std::shared_ptr<LibInterface>> _mSet;
 
-public:
+  public:
     bool Init();
     std::shared_ptr<LibInterface> get_pLibInterface(const char *sCommandName);
 };
