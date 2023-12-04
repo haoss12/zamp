@@ -58,6 +58,7 @@ void XMLInterp4Config::ProcessLibAttrs(const xercesc::Attributes &rAttrs)
 
     cout << "  Nazwa biblioteki: " << sLibName << endl;
     _config._Libs.push_back(sLibName);
+    _config._SetOfLibs.AddLib(sLibName);
 
     xercesc::XMLString::release(&sParamName);
     xercesc::XMLString::release(&sLibName);

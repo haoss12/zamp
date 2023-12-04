@@ -13,8 +13,6 @@
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "Set4LibInterfaces.hh"
-
 #include "xmlinterp.hh"
 
 using namespace std;
@@ -163,10 +161,14 @@ int main(int argc, char const *argv[])
     }
 
     Set4LibInterfaces SetOfInterfaces;
-    if (!SetOfInterfaces.Init())
-    {
-        return 1;
-    }
+    // if (!SetOfInterfaces.Init())
+    // {
+    //     return 1;
+    // }
+    SetOfInterfaces.AddLib("libInterp4Move.so");
+    SetOfInterfaces.AddLib("libInterp4Pause.so");
+    SetOfInterfaces.AddLib("libInterp4Set.so");
+    SetOfInterfaces.AddLib("libInterp4Rotate.so");
 
     // test if all of the components in set are working properly
 
