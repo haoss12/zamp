@@ -13,6 +13,7 @@
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/XMLString.hpp>
 
+#include "Scene.hh"
 #include "xmlinterp.hh"
 
 using namespace std;
@@ -138,14 +139,6 @@ int main(int argc, char const *argv[])
     std::cout << std::endl << std::endl << "Wczytane z XML elementy: " << std::endl;
     std::cout << std::endl;
 
-    for (auto &i : Config._Libs)
-    {
-        std::cout << i << " ";
-    }
-
-    std::cout << std::endl;
-    std::cout << std::endl;
-
     for (auto &i : Config._mobileObjs)
     {
         std::cout << i.GetName() << " ";
@@ -153,6 +146,8 @@ int main(int argc, char const *argv[])
 
     std::cout << std::endl;
     std::cout << std::endl;
+
+    Scene scena(Config);
 
     if (argc < 2)
     {
