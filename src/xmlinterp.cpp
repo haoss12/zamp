@@ -135,7 +135,7 @@ void XMLInterp4Config::ProcessCubeAttrs(const xercesc::Attributes &rAttrs)
     temp[0] = x;
     temp[1] = y;
     temp[2] = z;
-    cuboid.SetShift(temp);
+    cuboid.SetPosition_m(temp);
     if (IStrm.fail())
     {
         cerr << " Blad!!!" << endl;
@@ -194,7 +194,7 @@ void XMLInterp4Config::ProcessCubeAttrs(const xercesc::Attributes &rAttrs)
         cout << " Czytanie wartosci translacji OK!!!" << endl;
         cout << "     " << x << "  " << y << "  " << z << endl;
     }
-    cuboid.SetPosition_m(temp);
+    cuboid.SetTrans(temp);
 
     int r, g, b;
 

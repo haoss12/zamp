@@ -1,7 +1,8 @@
 #ifndef ABSTRACTSCENE_HH
 #define ABSTRACTSCENE_HH
 
-#include "AbstractMobileObj.hh"
+#include <memory>
+#include "Cuboid.hh"
 
 /*!
  * \file
@@ -30,8 +31,8 @@ public:
          *  \return Jeśli obiekt zostanie znaleziony, to zwracany jest wskaźnik
          *          na niego. W przypadku przeciwnym zwracany jest wskaźnik \p nullptr.
          */
-        virtual AbstractMobileObj *FindMobileObj(const char *sName) = 0;
-        
+        virtual std::shared_ptr<Cuboid> FindMobileObj(const char *sName) = 0;
+
         /*!
          * \brief Dodaje do sceny nowy obiekt.
          *
@@ -39,7 +40,7 @@ public:
          *  skonstruowaną pełną kwalifikowaną nazwę.
          *  \param[in] pMobObj - wskaźnik na istniejący obiekt.
          */
-        virtual void AddMobileObj(AbstractMobileObj *pMobObj) = 0;
+        virtual void AddMobileObj(Cuboid *pMobObj) = 0;
 };
 
 #endif

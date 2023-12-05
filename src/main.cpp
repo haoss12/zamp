@@ -12,121 +12,14 @@
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/XMLString.hpp>
+#include <thread>
 
 #include "Scene.hh"
 #include "xmlinterp.hh"
+#include "ReadUtils.hh"
+#include "Sender.hh"
 
 using namespace std;
-using namespace xercesc;
-
-/*!
- * Czyta z pliku opis poleceń i dodaje je do listy komend,
- * które robot musi wykonać.
- * \param sFileName - (\b we.) nazwa pliku z opisem poleceń.
- * \param CmdList - (\b we.) zarządca listy poleceń dla robota.
- * \retval true - jeśli wczytanie zostało zrealizowane poprawnie,
- * \retval false - w przeciwnym przypadku.
- */
-bool ReadFile(const char *sFileName, Configuration &rConfig)
-{
-    try
-    {
-        XMLPlatformUtils::Initialize();
-    }
-    catch (const XMLException &toCatch)
-    {
-        char *message = XMLString::transcode(toCatch.getMessage());
-        cerr << "Error during initialization! :\n";
-        cerr << "Exception message is: \n" << message << "\n";
-        XMLString::release(&message);
-        return 1;
-    }
-
-    SAX2XMLReader *pParser = XMLReaderFactory::createXMLReader();
-
-    pParser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-    pParser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-    pParser->setFeature(XMLUni::fgXercesDynamic, false);
-    pParser->setFeature(XMLUni::fgXercesSchema, true);
-    pParser->setFeature(XMLUni::fgXercesSchemaFullChecking, true);
-
-    pParser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-    DefaultHandler *pHandler = new XMLInterp4Config(rConfig);
-    pParser->setContentHandler(pHandler);
-    pParser->setErrorHandler(pHandler);
-
-    try
-    {
-
-        if (!pParser->loadGrammar("config/config.xsd", xercesc::Grammar::SchemaGrammarType, true))
-        {
-            cerr << "!!! Plik grammar/actions.xsd, '" << endl
-                 << "!!! ktory zawiera opis gramatyki, nie moze zostac wczytany." << endl;
-            return false;
-        }
-        pParser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-        pParser->parse(sFileName);
-    }
-    catch (const XMLException &Exception)
-    {
-        char *sMessage = XMLString::transcode(Exception.getMessage());
-        cerr << "Informacja o wyjatku: \n"
-             << "   " << sMessage << "\n";
-        XMLString::release(&sMessage);
-        return false;
-    }
-    catch (const SAXParseException &Exception)
-    {
-        char *sMessage = XMLString::transcode(Exception.getMessage());
-        char *sSystemId = xercesc::XMLString::transcode(Exception.getSystemId());
-
-        cerr << "Blad! " << endl
-             << "    Plik:  " << sSystemId << endl
-             << "   Linia: " << Exception.getLineNumber() << endl
-             << " Kolumna: " << Exception.getColumnNumber() << endl
-             << " Informacja: " << sMessage << endl;
-
-        XMLString::release(&sMessage);
-        XMLString::release(&sSystemId);
-        return false;
-    }
-    catch (...)
-    {
-        cout << "Zgloszony zostal nieoczekiwany wyjatek!\n";
-        return false;
-    }
-
-    delete pParser;
-    delete pHandler;
-    return true;
-}
-
-#define BUF_SIZE 512
-
-bool ExecutePreprocessing(const char *sFileName, std::istringstream &issCommands)
-{
-    std::string preprocessor = "cpp -P ";
-    char line_buffer[BUF_SIZE];
-    std::ostringstream outStrm;
-
-    preprocessor += sFileName;
-    FILE *pProc = popen(preprocessor.c_str(), "r"); // open process
-
-    if (!pProc)
-    {
-        return false;
-    }
-
-    while (fgets(line_buffer, BUF_SIZE, pProc))
-    {
-        outStrm << line_buffer;
-    }
-
-    issCommands.str(outStrm.str());
-
-    return pclose(pProc) == 0;
-}
 
 int main(int argc, char const *argv[])
 {
@@ -134,36 +27,45 @@ int main(int argc, char const *argv[])
     Configuration Config;
 
     if (!ReadFile("config/config.xml", Config))
-        return 1;
-
-    std::cout << std::endl << std::endl << "Wczytane z XML elementy: " << std::endl;
-    std::cout << std::endl;
-
-    for (auto &i : Config._mobileObjs)
     {
-        std::cout << i.GetName() << " ";
+        return 1;
     }
 
-    std::cout << std::endl;
-    std::cout << std::endl;
-
     Scene scena(Config);
+
+    Sender sender(&scena);
+
+    Set4LibInterfaces SetOfInterfaces;
+
+    for (auto &name : Config._Libs)
+    {
+        if (SetOfInterfaces.AddLib(name) != true)
+        {
+            cerr << "Nie udalo sie wczytac biblioteki: " << name << endl;
+        }
+        else
+        {
+            cout << "Wczytano biblioteke: " << name << endl;
+        }
+    }
+
+    if (sender.OpenConnection() == false)
+    {
+        std::cerr << "Blad przy otwieraniu polaczenia! " << std::endl;
+        return 0;
+    }
+
+    std::thread SendThread(&Sender::Watching_and_Sending, &sender);
+
+    while (true)
+    {
+    }
 
     if (argc < 2)
     {
         std::cerr << "Zbyt malo argumentow wywolania! " << std::endl;
         return 0;
     }
-
-    Set4LibInterfaces SetOfInterfaces;
-    // if (!SetOfInterfaces.Init())
-    // {
-    //     return 1;
-    // }
-    SetOfInterfaces.AddLib("libInterp4Move.so");
-    SetOfInterfaces.AddLib("libInterp4Pause.so");
-    SetOfInterfaces.AddLib("libInterp4Set.so");
-    SetOfInterfaces.AddLib("libInterp4Rotate.so");
 
     // test if all of the components in set are working properly
 

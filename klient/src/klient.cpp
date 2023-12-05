@@ -102,7 +102,7 @@ class GeomObject
      */
     const char **_Cmd4StatDesc = nullptr;
 
-  public:
+public:
     /*!
      * \brief Ustawia zestaw poleceń odpowiadających kolejnym stanom
      *        obiektu.
@@ -146,7 +146,7 @@ class GeomObject
  */
 class Scene : public AccessControl
 {
-  public:
+public:
     Scene() : _Container4Objects(3)
     {
         _Container4Objects[0].SetCmds(Cmds4Obj1);
@@ -187,7 +187,7 @@ class Sender
      */
     Scene *_pScn = nullptr;
 
-  public:
+public:
     /*!
      * \brief Inicjalizuje obiekt deskryptorem gniazda i wskaźnikiem
      *        na scenę, na zmianę stanu które będzie ten obiekt reagował.
@@ -206,6 +206,7 @@ class Sender
     bool ShouldCountinueLooping() const
     {
         return _ContinueLooping;
+        ProcessCubeAttrs
     }
     /*!
      * \brief Powoduje przerwanie działania pętli wątku.
@@ -378,7 +379,8 @@ int main()
     // Bez tego serwer nie będzie reagował na
     // nowe połączenia.
     //
-    cout << "Close\n" << endl; // To tylko, aby pokazac wysylana instrukcje
+    cout << "Close\n"
+         << endl; // To tylko, aby pokazac wysylana instrukcje
     Send(Socket4Sending, "Close\n");
     ClientSender.CancelCountinueLooping();
     Thread4Sending.join();

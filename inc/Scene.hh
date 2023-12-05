@@ -7,31 +7,43 @@
 #include <string>
 #include <vector>
 
-#include "AbstractScene.hh"
 #include "Configuration.hh"
+#include "AbstractScene.hh"
+#include "AccessControl.hh"
 
-class Scene : public AbstractScene
+class Scene : public AbstractScene, public AccessControl
 {
   private:
     std::map<std::string, std::shared_ptr<Cuboid>> _mapOfObjects;
 
   public:
-    Scene(const Configuration &_config)
+    explicit Scene(const Configuration &_config)
     {
         for (auto &obj : _config._mobileObjs)
         {
-            _mapOfObjects[obj.GetName()] = std::make_shared<Cuboid>(obj);
+          _mapOfObjects[obj.GetName()] = std::make_shared<Cuboid>(obj);
         }
 
         for (auto &obj : _mapOfObjects)
         {
-            std::cout << "scena " << obj.second->GetName() << " " << obj.second->GetScale() << std::endl;
+          obj.second->PrintState();
         }
     };
 
-    AbstractMobileObj *FindMobileObj(const char *sName) override{};
+    std::shared_ptr<Cuboid> FindMobileObj(const char *sName) override
+    {
+      return _mapOfObjects[sName];
+    };
 
-    void AddMobileObj(AbstractMobileObj *pMobObj) override{};
+    void AddMobileObj(Cuboid *pMobObj) override
+    {
+      _mapOfObjects[pMobObj->GetName()] = std::make_shared<Cuboid>(*pMobObj);
+    };
+
+    std::map<std::string, std::shared_ptr<Cuboid>> GetWholeMap()
+    {
+      return _mapOfObjects;
+    };
 };
 
 #endif

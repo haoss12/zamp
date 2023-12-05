@@ -11,7 +11,7 @@ class Cuboid : public AbstractMobileObj
 
     Vector3D _position;
     Vector3D _scale;
-    Vector3D _shift;
+    Vector3D _trans;
     double _roll_deg;
     double _pitch_deg;
     double _yaw_deg;
@@ -21,6 +21,13 @@ class Cuboid : public AbstractMobileObj
   public:
     Cuboid()
     {
+    }
+
+    void PrintState() const override
+    {
+        std::cout << _name << " pos: " << _position << " scl: " << _scale << " trans: " << _trans << " rpy: ";
+        std::cout << _roll_deg << " " << _pitch_deg << " " << _yaw_deg << " rgb: ";
+        std::cout << _color[0] << " " << _color[1] << " " << _color[2] << std::endl;
     }
 
     const std::string &GetName() const override
@@ -36,9 +43,9 @@ class Cuboid : public AbstractMobileObj
     {
         return _scale;
     }
-    const Vector3D &GetShift() const override
+    const Vector3D &GetTrans() const override
     {
-        return _shift;
+        return _trans;
     }
     double GetAng_Roll_deg() const override
     {
@@ -79,9 +86,9 @@ class Cuboid : public AbstractMobileObj
     {
         _scale = rScale;
     }
-    void SetShift(const Vector3D &rShift) override
+    void SetTrans(const Vector3D &rTrans) override
     {
-        _shift = rShift;
+        _trans = rTrans;
     }
     void SetAng_Roll_deg(double Ang_Roll_deg) override
     {
