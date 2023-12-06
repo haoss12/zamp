@@ -32,7 +32,7 @@ public:
          *  \return Jeśli obiekt zostanie znaleziony, to zwracany jest wskaźnik
          *          na niego. W przypadku przeciwnym zwracany jest wskaźnik \p nullptr.
          */
-        virtual std::shared_ptr<Cuboid> FindMobileObj(const char *sName) = 0;
+        virtual std::shared_ptr<Cuboid> FindMobileObj(const std::string &sName) = 0;
 
         /*!
          * \brief Dodaje do sceny nowy obiekt.

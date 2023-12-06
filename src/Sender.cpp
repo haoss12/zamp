@@ -1,5 +1,7 @@
 #include "Sender.hh"
 
+#include <sstream>
+
 Sender::~Sender()
 {
     close(_Socket);
@@ -37,8 +39,7 @@ void Sender::Watching_and_Sending()
     {
         if (!_pScn->IsChanged())
         {
-            std::cout << "looping" << std::endl;
-            usleep(10000);
+            usleep(100);
             continue;
         }
 
@@ -46,8 +47,8 @@ void Sender::Watching_and_Sending()
 
         for (auto &iterator : _pScn->GetWholeMap())
         {
-
-            Send(GetInstruction(*iterator.second, CommandType::Update).c_str());
+            std::string str = GetInstruction(*iterator.second, CommandType::Update);
+            Send(str.c_str());
         }
 
         _pScn->CancelChange();
@@ -83,24 +84,24 @@ bool Sender::OpenConnection()
 
 std::string Sender::GetInstruction(Cuboid &obj, CommandType com) const
 {
-    std::string tmp;
+    std::stringstream tmp;
     if (com == CommandType::Add)
     {
-        tmp = "AddObj";
+        tmp << "AddObj";
     }
     else if (com == CommandType::Update)
     {
-        tmp = "UpdateObj";
+        tmp << "UpdateObj";
     }
     Vector3D pos = obj.GetPosition_m();
     Vector3D sca = obj.GetScale();
     Vector3D tra = obj.GetPosition_m();
-    tmp += " Name=" + obj.GetName();
-    tmp += " Shift=(" + std::to_string(pos[0]) + ", " + std::to_string(pos[1]) + ", " + std::to_string(pos[2]) + ")";
-    tmp += " Scale=(" + std::to_string(sca[0]) + ", " + std::to_string(sca[1]) + ", " + std::to_string(sca[2]) + ")";
-    tmp += " Trans_m=(" + std::to_string(tra[0]) + ", " + std::to_string(tra[1]) + ", " + std::to_string(tra[2]) + ")";
-    tmp += " RGB=(" + std::to_string(obj.GetColor_R()) + ", " + std::to_string(obj.GetColor_G()) + ", " + std::to_string(obj.GetColor_B()) + ")";
-    tmp += " RotXYZ_deg=(" + std::to_string(obj.GetAng_Roll_deg()) + ", " + std::to_string(obj.GetAng_Pitch_deg()) + ", " + std::to_string(obj.GetAng_Yaw_deg()) + ")\n";
-    std::cout << tmp;
-    return tmp;
+    tmp << " Name=" << obj.GetName();
+    tmp << " Shift=(" << pos[0] << ", " << pos[1] << ", " << pos[2] << ")";
+    tmp << " Scale=(" << sca[0] << ", " << sca[1] << ", " << sca[2] << ")";
+    tmp << " Trans_m=(" << tra[0] << ", " << tra[1] << ", " << tra[2] << ")";
+    tmp << " RGB=(" << obj.GetColor_R() << ", " << obj.GetColor_G() << ", " << obj.GetColor_B() << ")";
+    tmp << " RotXYZ_deg=(" << obj.GetAng_Roll_deg() << ", " << obj.GetAng_Pitch_deg() << ", " << obj.GetAng_Yaw_deg() << ")\n";
+    std::cout << tmp.str() << std::endl;
+    return tmp.str();
 }

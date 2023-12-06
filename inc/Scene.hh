@@ -30,8 +30,13 @@ class Scene : public AbstractScene
         }
     };
 
-    std::shared_ptr<Cuboid> FindMobileObj(const char *sName) override
+    std::shared_ptr<Cuboid> FindMobileObj(const std::string &sName) override
     {
+      auto it = _mapOfObjects.find(sName);
+      if (it == _mapOfObjects.end())
+      {
+        return std::shared_ptr<Cuboid>(nullptr);
+      }
       return _mapOfObjects[sName];
     };
 

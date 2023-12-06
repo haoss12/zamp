@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Interp4Rotate.hh"
 
+using std::cerr;
 using std::cout;
 using std::endl;
 
@@ -48,9 +49,52 @@ const char *Interp4Rotate::GetCmdName() const
  */
 bool Interp4Rotate::ExecCmd(AbstractScene &rScn)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  auto obj = rScn.FindMobileObj(_ObjName);
+  if (obj == nullptr)
+  {
+    cerr << "Brak obiektu o podanej nazwie!" << endl;
+    return false;
+  }
+
+  double roll = obj->GetAng_Roll_deg();
+  double pitch = obj->GetAng_Pitch_deg();
+  double yaw = obj->GetAng_Yaw_deg();
+
+  double time_of_move = _Angle_deg / _Speed_degS;
+  int steps = 200;
+  int time_of_step = static_cast<int>(time_of_move / steps);
+  double step = _Angle_deg / steps;
+
+  for (int i = 0; i < steps; ++i)
+  {
+    rScn.LockAccess();
+    switch (_Axis)
+    {
+    case 'X':
+      roll += step;
+      obj->SetAng_Roll_deg(roll);
+      break;
+    case 'Y':
+      pitch += step;
+      obj->SetAng_Pitch_deg(pitch);
+      break;
+    case 'Z':
+      yaw += step;
+      obj->SetAng_Yaw_deg(yaw);
+      break;
+
+    default:
+      cerr << "Podano złą oś!" << endl;
+      rScn.MarkChange();
+      rScn.UnlockAccess();
+      return false;
+      break;
+    }
+    rScn.MarkChange();
+    rScn.UnlockAccess();
+    usleep(time_of_step * 1000);
+  }
+
   return true;
 }
 

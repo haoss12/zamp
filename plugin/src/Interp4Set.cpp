@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Interp4Set.hh"
 
+using std::cerr;
 using std::cout;
 using std::endl;
 
@@ -51,9 +52,28 @@ const char *Interp4Set::GetCmdName() const
  */
 bool Interp4Set::ExecCmd(AbstractScene &rScn)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  auto obj = rScn.FindMobileObj(_ObjName);
+  if (obj == nullptr)
+  {
+    cerr << "Brak obiektu o podanej nazwie!" << endl;
+    return false;
+  }
+
+  Vector3D vec;
+  vec[0] = _X;
+  vec[1] = _Y;
+  vec[2] = _Z;
+
+  rScn.LockAccess();
+
+  obj->SetPosition_m(vec);
+  obj->SetAng_Roll_deg(_OX);
+  obj->SetAng_Pitch_deg(_OY);
+  obj->SetAng_Yaw_deg(_OZ);
+
+  rScn.MarkChange();
+  rScn.UnlockAccess();
+
   return true;
 }
 
@@ -62,7 +82,7 @@ bool Interp4Set::ExecCmd(AbstractScene &rScn)
  */
 bool Interp4Set::ReadParams(std::istream &Strm_CmdsList)
 {
-  Strm_CmdsList >> _ObjName >> _X >> _Y >> _Z >> _OX >> _Y >> _OZ;
+  Strm_CmdsList >> _ObjName >> _X >> _Y >> _Z >> _OX >> _OY >> _OZ;
   return true;
 }
 
@@ -79,5 +99,5 @@ AbstractInterp4Command *Interp4Set::CreateCmd()
  */
 void Interp4Set::PrintSyntax() const
 {
-  cout << "   Set  NazwaObiektu  Szybkosc[m/s]  DlugoscDrogi[m]" << endl;
+  cout << "   Set  NazwaObiektu  X  Y  Z  OX  OY  OZ" << endl;
 }
