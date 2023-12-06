@@ -46,9 +46,7 @@ const char *Interp4Rotate::GetCmdName() const
 /*!
  *
  */
-bool Interp4Rotate::ExecCmd(AbstractScene &rScn,
-                            const char *sMobObjName,
-                            AbstractComChannel &rComChann)
+bool Interp4Rotate::ExecCmd(AbstractScene &rScn)
 {
   /*
    *  Tu trzeba napisać odpowiedni kod.

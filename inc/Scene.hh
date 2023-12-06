@@ -11,7 +11,7 @@
 #include "AbstractScene.hh"
 #include "AccessControl.hh"
 
-class Scene : public AbstractScene, public AccessControl
+class Scene : public AbstractScene
 {
   private:
     std::map<std::string, std::shared_ptr<Cuboid>> _mapOfObjects;

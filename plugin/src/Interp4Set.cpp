@@ -49,9 +49,7 @@ const char *Interp4Set::GetCmdName() const
 /*!
  *
  */
-bool Interp4Set::ExecCmd(AbstractScene &rScn,
-                         const char *sMobObjName,
-                         AbstractComChannel &rComChann)
+bool Interp4Set::ExecCmd(AbstractScene &rScn)
 {
   /*
    *  Tu trzeba napisać odpowiedni kod.

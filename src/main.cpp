@@ -57,19 +57,11 @@ int main(int argc, char const *argv[])
 
     std::thread SendThread(&Sender::Watching_and_Sending, &sender);
 
-    while (true)
-    {
-    }
-
     if (argc < 2)
     {
         std::cerr << "Zbyt malo argumentow wywolania! " << std::endl;
         return 0;
     }
-
-    // test if all of the components in set are working properly
-
-    std::vector<std::string> list{"Move", "Set", "Rotate", "Pause"};
 
     std::istringstream iss;
     std::string command;
@@ -93,6 +85,7 @@ int main(int argc, char const *argv[])
                 std::cerr << "nie udalo sie odczytac argumentow" << std::endl;
             }
             pCmd->PrintCmd();
+            pCmd->ExecCmd(scena);
             std::cout << std::endl;
 
             delete pCmd;
@@ -102,6 +95,10 @@ int main(int argc, char const *argv[])
         {
             std::cerr << e.what() << '\n';
         }
+    }
+
+    while (true)
+    {
     }
 
     // for (auto &s : list)

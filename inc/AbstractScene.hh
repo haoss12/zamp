@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Cuboid.hh"
+#include "AccessControl.hh"
 
 /*!
  * \file
@@ -18,7 +19,7 @@
  * Definiuje interfejs klasy modelującej scenę roboczą,
  * która zawiera kolekcję obiektów mobilnych.
  */
-class AbstractScene
+class AbstractScene : public AccessControl
 {
 public:
         virtual ~AbstractScene() {}

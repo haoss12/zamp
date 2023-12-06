@@ -46,13 +46,13 @@ const char *Interp4Pause::GetCmdName() const
 /*!
  *
  */
-bool Interp4Pause::ExecCmd(AbstractScene &rScn,
-                           const char *sMobObjName,
-                           AbstractComChannel &rComChann)
+bool Interp4Pause::ExecCmd(AbstractScene &rScn)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod.
-   */
+  rScn.LockAccess();
+  cout << " Pause" << endl;
+  usleep(_Time_ms * 1000);
+  rScn.MarkChange();
+  rScn.UnlockAccess();
   return true;
 }
 

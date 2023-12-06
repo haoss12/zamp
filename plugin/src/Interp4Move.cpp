@@ -46,9 +46,7 @@ const char *Interp4Move::GetCmdName() const
 /*!
  *
  */
-bool Interp4Move::ExecCmd(AbstractScene &rScn,
-                          const char *sMobObjName,
-                          AbstractComChannel &rComChann)
+bool Interp4Move::ExecCmd(AbstractScene &rScn)
 {
   /*
    *  Tu trzeba napisać odpowiedni kod.
