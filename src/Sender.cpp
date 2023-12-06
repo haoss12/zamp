@@ -39,20 +39,19 @@ void Sender::Watching_and_Sending()
     {
         if (!_pScn->IsChanged())
         {
-            usleep(100);
+            usleep(1200);
             continue;
         }
 
-        _pScn->LockAccess();
-
         for (auto &iterator : _pScn->GetWholeMap())
         {
+            _pScn->LockAccess();
             std::string str = GetInstruction(*iterator.second, CommandType::Update);
             Send(str.c_str());
+            _pScn->UnlockAccess();
         }
 
         _pScn->CancelChange();
-        _pScn->UnlockAccess();
     }
 }
 
@@ -102,6 +101,5 @@ std::string Sender::GetInstruction(Cuboid &obj, CommandType com) const
     tmp << " Trans_m=(" << tra[0] << ", " << tra[1] << ", " << tra[2] << ")";
     tmp << " RGB=(" << obj.GetColor_R() << ", " << obj.GetColor_G() << ", " << obj.GetColor_B() << ")";
     tmp << " RotXYZ_deg=(" << obj.GetAng_Roll_deg() << ", " << obj.GetAng_Pitch_deg() << ", " << obj.GetAng_Yaw_deg() << ")\n";
-    std::cout << tmp.str() << std::endl;
     return tmp.str();
 }

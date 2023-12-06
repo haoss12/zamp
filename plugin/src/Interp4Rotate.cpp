@@ -61,7 +61,7 @@ bool Interp4Rotate::ExecCmd(AbstractScene &rScn)
   double yaw = obj->GetAng_Yaw_deg();
 
   double time_of_move = _Angle_deg / _Speed_degS;
-  int steps = 200;
+  int steps = 100;
   int time_of_step = static_cast<int>(time_of_move / steps);
   double step = _Angle_deg / steps;
 

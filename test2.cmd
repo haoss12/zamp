@@ -9,6 +9,6 @@
   Pause  500                /* Zawieszenie na 1 sek. */
   Rotate Podstawa.Ramie1.Ramie2 OZ ROTATE_SPEED 40
   Pause  500                /* Zawieszenie na 1 sek. */
-  Move Podstawa TRANS_SPEED 1
+  Move Podstawa TRANS_SPEED 0.5
 
 

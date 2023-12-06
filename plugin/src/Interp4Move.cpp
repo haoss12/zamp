@@ -57,25 +57,21 @@ bool Interp4Move::ExecCmd(AbstractScene &rScn)
   }
 
   Vector3D position = obj->GetPosition_m();
-  double roll = obj->GetAng_Roll_deg();
-  double pitch = obj->GetAng_Pitch_deg();
   double yaw = obj->GetAng_Yaw_deg();
 
   double time_of_move = _Distance_m / _Speed_mmS;
-  int steps = 200;
+  int steps = 100;
   int time_of_step = static_cast<int>(time_of_move / steps);
   double step = _Distance_m / steps;
 
-  double dx = step * cos(pitch * M_PI / 180) * cos(yaw * M_PI / 180);
-  double dy = step * (cos(roll * M_PI / 180) * sin(yaw * M_PI / 180) + cos(yaw * M_PI / 180) * sin(pitch * M_PI / 180) * sin(roll * M_PI / 180));
-  double dz = step * (sin(roll * M_PI / 180) * sin(yaw * M_PI / 180) - cos(roll * M_PI / 180) * cos(yaw * M_PI / 180) * sin(pitch * M_PI / 180));
+  double dx = step * cos(yaw * M_PI / 180);
+  double dy = step * sin(yaw * M_PI / 180);
 
   for (int i = 0; i < steps; ++i)
   {
     rScn.LockAccess();
     position[0] += dx;
     position[1] += dy;
-    position[2] += dz;
 
     obj->SetPosition_m(position);
     rScn.MarkChange();
